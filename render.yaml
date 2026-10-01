@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: rethread-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: CONNECTION_TEST
+        value: "1"          # step 1: structural replies only; remove once the AI service is connected
+      - key: ALLOWED_ORIGIN
+        sync: false         # your frontend URL
+      - key: AI_SERVICE_URL
+        sync: false         # step 2: the AI service URL
+  - type: web
+    name: rethread-ai
+    runtime: docker
+    dockerfilePath: ./ai_service/Dockerfile
+    dockerContext: ./ai_service
